@@ -57,14 +57,39 @@ public class QuestYAMLReaderUtil {
         return NPCIDs;
     }
 
-    public static String getVaildQuestsFilesNames(int NPCId) {
+    public static List<String> getVaildQuestsFilesNames(int NPCId) {
         List<String> allQuestsFileNames = getAllQuestsFilesNames();
+        List<String> vaildQuestsFilesNames = new ArrayList<>();
         for (String questFileName : allQuestsFileNames) {
             List<Integer> NPCs = getNPCIDs(questFileName);
             if (NPCs.contains(NPCId)) {
-                return questFileName;
+                vaildQuestsFilesNames.add(questFileName);
             }
         }
-        return null;
+        return vaildQuestsFilesNames;
+    }
+
+    public static List<String> getConversations(String questFileName) {
+        return getQuestData(questFileName).getStringList("Conversation");
+    }
+
+    public static List<Integer> getStartPoints(String questFileName) {
+        return getQuestData(questFileName).getIntegerList("StartPoints");
+    }
+
+    public static List<String> getObjectives(String questFileName) {
+        return getQuestData(questFileName).getStringList("Objectives");
+    }
+
+    public static List<String> getEvents(String questFileName) {
+        return getQuestData(questFileName).getStringList("Events");
+    }
+
+    public static List<String> getConditions(String questFileName) {
+        return getQuestData(questFileName).getStringList("Conditions");
+    }
+
+    public static List<String> getJournals(String questFileName) {
+        return getQuestData(questFileName).getStringList("Journals");
     }
 }
