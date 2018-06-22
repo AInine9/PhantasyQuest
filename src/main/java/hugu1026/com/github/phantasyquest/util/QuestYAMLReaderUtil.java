@@ -1,11 +1,11 @@
 package hugu1026.com.github.phantasyquest.util;
 
-import hugu1026.com.github.phantasyquest.PhantasyQuest;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,8 +21,14 @@ public class QuestYAMLReaderUtil {
         return YamlConfiguration.loadConfiguration(questFile);
     }
 
-    public static List<File> getAllQuests() {
+    public static List<String> getAllQuestsNames() {
         File questFile = new File(Bukkit.getServer().getPluginManager().getPlugin("PhantasyQuest").getDataFolder(), File.separator + "quests");
-        return Arrays.asList(questFile.listFiles());
+        List<File> questFiles = Arrays.asList(questFile.listFiles());
+        List<String> questNames = new ArrayList<>();
+        questFiles.forEach(file -> {
+            String questName = file.getName().replace("plugins\\PhantasyQuest\\quests\\", "");
+            questNames.add(questName);
+        });
+        return questNames;
     }
 }
