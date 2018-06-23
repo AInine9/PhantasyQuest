@@ -2,3 +2,6 @@ name: PhantasyQuest
 version: ${project.version}
 main: hugu1026.com.github.phantasyquest.PhantasyQuest
 depend: [Citizens]
+commands:
+  quest:
+    description: "PhantasyQuest commands."
