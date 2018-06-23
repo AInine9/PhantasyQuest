@@ -72,11 +72,11 @@ public class ConversationFormatter {
         }
     }
 
-    public List<Integer> getConditions() {
+    public List<Integer> getConditionNumbers() {
         return this.conditionNumbers;
     }
 
-    public List<Integer> getEvents() {
+    public List<Integer> getEventNumbers() {
         return this.eventNumbers;
     }
 
