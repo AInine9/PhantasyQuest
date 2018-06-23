@@ -34,6 +34,8 @@ public class Quest {
 
     public void startQuest(int startPoint) {
         Conversation conversation = new Conversation(conversations.get(startPoint - 1), player);
+
+        //check conditions
         if (conversation.getConditionNumbers() != null) {
             conversation.getConditionNumbers().forEach(number -> {
                 ConditionChecker checker = new ConditionChecker(conditions.get(number));
@@ -42,17 +44,21 @@ public class Quest {
         }
 
         if (conversation.getSpeakerPlayer() == null) {
+            //speaker is a NPC
             player.sendMessage(ChatColor.GREEN + "[Quest] " + ChatColor.RED + NPCName + ": " + ChatColor.GOLD + conversation.getText());
         } else {
+            //speaker is a player
             player.sendMessage(ChatColor.GREEN + "[Quest] " + ChatColor.RED + player.getName() + ": " + ChatColor.GOLD + conversation.getText());
         }
 
         if (conversation.getReplyNumbers().size() == 0) {
+            //exist next conversation
             Bukkit.getScheduler().scheduleSyncDelayedTask(PhantasyQuest.getPlugin(PhantasyQuest.class), () ->
                             startQuest(conversation.getNextNumbers())
                     , 40L);
 
         } else {
+            //exist reply
             Bukkit.getScheduler().scheduleSyncDelayedTask(PhantasyQuest.getPlugin(PhantasyQuest.class), ()
                     -> conversation.getReplyNumbers().forEach(number -> {
                 Conversation conv = new Conversation(conversations.get(number - 1), player);
