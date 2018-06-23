@@ -1,6 +1,7 @@
 package hugu1026.com.github.phantasyquest.quest;
 
 import hugu1026.com.github.phantasyquest.quest.condition.ConditionChecker;
+import hugu1026.com.github.phantasyquest.quest.conversation.ConversationFormatter;
 import hugu1026.com.github.phantasyquest.util.QuestYAMLReaderUtil;
 import org.bukkit.entity.Player;
 
@@ -28,51 +29,22 @@ public class QuestSuggester {
         String questName = QuestYAMLReaderUtil.getQuestName(questFileName);
         startPoint.forEach(point -> {
             String conversation = conversations.get(point - 1);
-            if (conversation.contains("; ")) {
-                setNumbers(conversation);
-                for (int number : conditionNumbers) {
-                    ConditionChecker conditionChecker = new ConditionChecker(conditions.get(number - 1));
-                    if (!conditionChecker.checkMeetCondition(player)) {
-                        return;
-                    }
-                }
-                for (String q : suggestedQuests.keySet()) {
-                    if (q.equals(questName)) {
-                        return;
-                    }
-                }
-                suggestedQuests.put(questName, questFileName);
+            ConversationFormatter formatter = new ConversationFormatter(conversation, questFileName);
+            conditionNumbers = formatter.getConditionNumbers();
 
-            } else {
-                for (String q : suggestedQuests.keySet()) {
-                    if (q.equals(questName)) {
-                        return;
-                    }
+            for (int number : conditionNumbers) {
+                ConditionChecker conditionChecker = new ConditionChecker(conditions.get(number - 1));
+                if (!conditionChecker.checkMeetCondition(player)) {
+                    return;
                 }
-                suggestedQuests.put(questName, questFileName);
             }
+            for (String q : suggestedQuests.keySet()) {
+                if (q.equals(questName)) {
+                    return;
+                }
+            }
+            suggestedQuests.put(questName, questFileName);
         });
-    }
-
-    public void setNumbers(String conversation) {
-        String strings[] = conversation.split("; ");
-        setConditionNumbers(strings);
-    }
-
-    public void setConditionNumbers(String strings[]) {
-        for (String string : strings) {
-            if (string.contains("conditions:")) {
-                string = string.replace("conditions:", "");
-                if (string.contains(", ")) {
-                    String numbers[] = string.split(", ");
-                    for (String number : numbers) {
-                        conditionNumbers.add(Integer.valueOf(number));
-                    }
-                } else {
-                    conditionNumbers.add(Integer.valueOf(string));
-                }
-            }
-        }
     }
 
     public Map<String, String> getSuggestedQuests() {
