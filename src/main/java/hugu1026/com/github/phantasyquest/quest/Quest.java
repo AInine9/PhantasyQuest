@@ -1,13 +1,13 @@
 package hugu1026.com.github.phantasyquest.quest;
 
 import hugu1026.com.github.phantasyquest.PhantasyQuest;
+import hugu1026.com.github.phantasyquest.quest.condition.ConditionChecker;
 import hugu1026.com.github.phantasyquest.quest.conversation.Conversation;
 import hugu1026.com.github.phantasyquest.util.QuestYAMLReaderUtil;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
@@ -33,19 +33,33 @@ public class Quest {
     }
 
     public void startQuest(int startPoint) {
-        final int[] point = {startPoint};
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                Conversation conversation = new Conversation(conversations.get(point[0] - 1), questFileName);
-                player.sendMessage(ChatColor.GREEN + "[Quest] " + ChatColor.RED + NPCName + ": " + ChatColor.GOLD + conversation.getText());
-                if (conversations.size() == point[0]) {
-                    cancel();
-                } else {
-                    point[0] = point[0] + 1;
-                }
-            }
-        }.runTaskTimer(PhantasyQuest.getPlugin(PhantasyQuest.class), 20L, 40L);
+        Conversation conversation = new Conversation(conversations.get(startPoint - 1), player);
+        if (conversation.getConditionNumbers() != null) {
+            conversation.getConditionNumbers().forEach(number -> {
+                ConditionChecker checker = new ConditionChecker(conditions.get(number));
+                checker.checkMeetCondition(player);
+            });
+        }
+
+        if (conversation.getSpeakerPlayer() == null) {
+            player.sendMessage(ChatColor.GREEN + "[Quest] " + ChatColor.RED + NPCName + ": " + ChatColor.GOLD + conversation.getText());
+        } else {
+            player.sendMessage(ChatColor.GREEN + "[Quest] " + ChatColor.RED + player.getName() + ": " + ChatColor.GOLD + conversation.getText());
+        }
+
+        if (conversation.getReplyNumbers().size() == 0) {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(PhantasyQuest.getPlugin(PhantasyQuest.class), () ->
+                            startQuest(conversation.getNextNumbers())
+                    , 40L);
+
+        } else {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(PhantasyQuest.getPlugin(PhantasyQuest.class), ()
+                    -> conversation.getReplyNumbers().forEach(number -> {
+                Conversation conv = new Conversation(conversations.get(number - 1), player);
+                player.sendMessage(ChatColor.GREEN + "[Quest] " + ChatColor.RED + player.getName() + ": " + ChatColor.GOLD + conv.getText());
+            }), 40L);
+        }
+
     }
 
     public String getQuestName() {

@@ -1,22 +1,29 @@
 package hugu1026.com.github.phantasyquest.quest.conversation;
 
+import org.bukkit.entity.Player;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConversationFormatter {
     private String text;
     private int speakerNPCID;
+    private Player player = null;
     private List<Integer> eventNumbers = new ArrayList<>();
     private List<Integer> conditionNumbers = new ArrayList<>();
     private List<Integer> replyNumbers = new ArrayList<>();
-    private List<Integer> nextNumbers = new ArrayList<>();
+    private int nextNumber;
 
-    public ConversationFormatter(String conversation, String questFileName) {
+    public ConversationFormatter(String conversation, Player player) {
         if (conversation.contains("; ")) {
             String strings[] = conversation.split("; ");
 
             String conv[] = strings[0].split(">");
-            speakerNPCID = Integer.parseInt(conv[0]);
+            if (conv[0].equals("player")) {
+                this.player = player;
+            } else {
+                speakerNPCID = Integer.parseInt(conv[0]);
+            }
             text = conv[1];
 
             for (String string : strings) {
@@ -59,16 +66,17 @@ public class ConversationFormatter {
 
                 if (string.contains("next:")) {
                     string = string.replace("next:", "");
-                    if (string.contains(", ")) {
-                        String numbers[] = string.split(", ");
-                        for (String number : numbers) {
-                            nextNumbers.add(Integer.valueOf(number));
-                        }
-                    } else {
-                        nextNumbers.add(Integer.valueOf(string));
-                    }
+                    nextNumber = Integer.parseInt(string);
                 }
             }
+        } else {
+            String conv[] = conversation.split(">");
+            if (conv[0].equals("player")) {
+                this.player = player;
+            } else {
+                speakerNPCID = Integer.parseInt(conv[0]);
+            }
+            text = conv[1];
         }
     }
 
@@ -80,8 +88,8 @@ public class ConversationFormatter {
         return this.eventNumbers;
     }
 
-    public List<Integer> getNextNumbers() {
-        return this.nextNumbers;
+    public int getNextNumber() {
+        return this.nextNumber;
     }
 
     public List<Integer> getReplyNumbers() {
@@ -94,5 +102,9 @@ public class ConversationFormatter {
 
     public int getSpeakerNPCID() {
         return this.speakerNPCID;
+    }
+
+    public Player getPlayer() {
+        return this.player;
     }
 }

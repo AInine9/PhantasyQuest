@@ -33,7 +33,7 @@ public class QuestSuggester {
         String questName = QuestYAMLReaderUtil.getQuestName(questFileName);
         startPoint.forEach(point -> {
             String conversation = conversations.get(point - 1);
-            Conversation conv = new Conversation(conversation, questFileName);
+            Conversation conv = new Conversation(conversation, player);
             conditionNumbers = conv.getConditionNumbers();
 
             if (conv.getSpeakerNPCID() != clickedNPCID) return;

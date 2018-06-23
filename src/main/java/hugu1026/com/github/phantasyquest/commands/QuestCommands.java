@@ -3,7 +3,6 @@ package hugu1026.com.github.phantasyquest.commands;
 import hugu1026.com.github.phantasyquest.PhantasyQuest;
 import hugu1026.com.github.phantasyquest.quest.Quest;
 import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.CitizensPlugin;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
