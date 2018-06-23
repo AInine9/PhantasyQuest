@@ -14,10 +14,12 @@ public class QuestSuggester {
     private List<String> conversations, conditions;
     private List<Integer> conditionNumbers = new ArrayList<>();
     private List<Integer> startPoint;
+    private int clickedNPCID;
     private Map<String, String> suggestedQuests = new HashMap<>(); //Quest Name, Quest File name.
 
     public QuestSuggester(int NPCID, Player player) {
         QuestYAMLReaderUtil.getVaildQuestsFilesNames(NPCID).forEach(questFileName -> {
+            this.clickedNPCID = NPCID;
             this.conversations = QuestYAMLReaderUtil.getConversations(questFileName);
             this.conditions = QuestYAMLReaderUtil.getConditions(questFileName);
             this.startPoint = QuestYAMLReaderUtil.getStartPoints(questFileName);
@@ -26,11 +28,14 @@ public class QuestSuggester {
     }
 
     public void suggestQuest(List<String> conversations, List<String> conditions, String questFileName, Player player) {
+
         String questName = QuestYAMLReaderUtil.getQuestName(questFileName);
         startPoint.forEach(point -> {
             String conversation = conversations.get(point - 1);
             ConversationFormatter formatter = new ConversationFormatter(conversation, questFileName);
             conditionNumbers = formatter.getConditionNumbers();
+
+            if (formatter.getSpeakerNPCID() != clickedNPCID) return;
 
             for (int number : conditionNumbers) {
                 ConditionChecker conditionChecker = new ConditionChecker(conditions.get(number - 1));
