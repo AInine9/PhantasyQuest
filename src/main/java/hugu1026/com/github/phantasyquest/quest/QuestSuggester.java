@@ -1,7 +1,7 @@
 package hugu1026.com.github.phantasyquest.quest;
 
 import hugu1026.com.github.phantasyquest.quest.condition.ConditionChecker;
-import hugu1026.com.github.phantasyquest.quest.conversation.ConversationFormatter;
+import hugu1026.com.github.phantasyquest.quest.conversation.Conversation;
 import hugu1026.com.github.phantasyquest.util.QuestYAMLReaderUtil;
 import org.bukkit.entity.Player;
 
@@ -32,10 +32,10 @@ public class QuestSuggester {
         String questName = QuestYAMLReaderUtil.getQuestName(questFileName);
         startPoint.forEach(point -> {
             String conversation = conversations.get(point - 1);
-            ConversationFormatter formatter = new ConversationFormatter(conversation, questFileName);
-            conditionNumbers = formatter.getConditionNumbers();
+            Conversation conv = new Conversation(conversation, questFileName);
+            conditionNumbers = conv.getConditionNumbers();
 
-            if (formatter.getSpeakerNPCID() != clickedNPCID) return;
+            if (conv.getSpeakerNPCID() != clickedNPCID) return;
 
             for (int number : conditionNumbers) {
                 ConditionChecker conditionChecker = new ConditionChecker(conditions.get(number - 1));
