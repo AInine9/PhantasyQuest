@@ -1,9 +1,13 @@
 package hugu1026.com.github.phantasyquest.quest;
 
+import hugu1026.com.github.phantasyquest.PhantasyQuest;
 import hugu1026.com.github.phantasyquest.quest.conversation.Conversation;
 import hugu1026.com.github.phantasyquest.util.QuestYAMLReaderUtil;
 import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
@@ -29,8 +33,19 @@ public class Quest {
     }
 
     public void startQuest(int startPoint) {
-        Conversation conversation = new Conversation(conversations.get(startPoint - 1), questFileName);
-        player.sendMessage(conversation.getText());
+        final int[] point = {startPoint};
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Conversation conversation = new Conversation(conversations.get(point[0] - 1), questFileName);
+                player.sendMessage(ChatColor.GREEN + "[Quest] " + ChatColor.RED + NPCName + ": " + ChatColor.GOLD + conversation.getText());
+                if (conversations.size() == point[0]) {
+                    cancel();
+                } else {
+                    point[0] = point[0] + 1;
+                }
+            }
+        }.runTaskTimer(PhantasyQuest.getPlugin(PhantasyQuest.class), 20L, 40L);
     }
 
     public String getQuestName() {
