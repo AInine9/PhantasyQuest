@@ -17,7 +17,7 @@ public class HasItem extends Condition {
     public boolean checkMeetCondition(Player player) {
         String item = getArg(1);
         int amount = Integer.parseInt(getArg(2));
-        ItemStack itemStack = new ItemStack(Material.getMaterial(item), amount);
+        ItemStack itemStack = new ItemStack(Material.valueOf(item), amount);
 
         return player.getInventory().contains(itemStack);
     }
