@@ -24,11 +24,13 @@ public class NPCRightClick implements Listener {
 
         QuestSuggester questSuggester = new QuestSuggester(id, player);
         Map<String, String> suggestedQuests = questSuggester.getSuggestedQuests();
+        Map<String, Integer> startPoints = questSuggester.getConvStartPoint();
 
         suggestedQuests.keySet().forEach(questName -> {
             String questFileName = suggestedQuests.get(questName);
+            int startPoint = startPoints.get(questName);
             TextComponent component = new TextComponent(ChatColor.GREEN + "[Quest] " + ChatColor.GOLD + questName);
-            component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/quest start " + questFileName + player));
+            component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/quest start " + questFileName + player + startPoint));
             component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.GOLD + "クリックして受注").create()));
             player.spigot().sendMessage(component);
         });

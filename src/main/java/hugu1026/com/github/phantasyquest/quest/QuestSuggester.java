@@ -16,6 +16,7 @@ public class QuestSuggester {
     private List<Integer> startPoint;
     private int clickedNPCID;
     private Map<String, String> suggestedQuests = new HashMap<>(); //Quest Name, Quest File name.
+    private Map<String, Integer> convStartPoint = new HashMap<>(); //Quest Name, Conversation start point.
 
     public QuestSuggester(int NPCID, Player player) {
         QuestYAMLReaderUtil.getVaildQuestsFilesNames(NPCID).forEach(questFileName -> {
@@ -49,10 +50,15 @@ public class QuestSuggester {
                 }
             }
             suggestedQuests.put(questName, questFileName);
+            convStartPoint.put(questName, point);
         });
     }
 
     public Map<String, String> getSuggestedQuests() {
         return this.suggestedQuests;
+    }
+
+    public Map<String, Integer> getConvStartPoint() {
+        return convStartPoint;
     }
 }
