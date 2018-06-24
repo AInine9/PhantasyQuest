@@ -26,6 +26,7 @@ public class NPCRightClick implements Listener {
         Map<String, String> suggestedQuests = questSuggester.getSuggestedQuests();
         Map<String, Integer> startPoints = questSuggester.getConvStartPoint();
 
+        player.sendMessage(ChatColor.GREEN + "=====クエスト一覧=====");
         suggestedQuests.keySet().forEach(questName -> {
             String questFileName = suggestedQuests.get(questName);
             int startPoint = startPoints.get(questName);
@@ -34,5 +35,6 @@ public class NPCRightClick implements Listener {
             component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.GOLD + "クリックして受注").create()));
             player.spigot().sendMessage(component);
         });
+        player.sendMessage(ChatColor.GREEN + "=====クエスト一覧=====");
     }
 }

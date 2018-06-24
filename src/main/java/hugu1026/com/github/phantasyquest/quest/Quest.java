@@ -42,7 +42,7 @@ public class Quest {
         //check conditions
         if (conversation.getConditionNumbers() != null) {
             conversation.getConditionNumbers().forEach(number -> {
-                ConditionChecker checker = new ConditionChecker(conditions.get(number));
+                ConditionChecker checker = new ConditionChecker(conditions.get(number - 1));
                 checker.checkMeetCondition(player);
             });
         }
@@ -64,7 +64,7 @@ public class Quest {
         } else if (conversation.getReplyNumbers().size() != 0) {
             //exist reply
             Bukkit.getScheduler().scheduleSyncDelayedTask(PhantasyQuest.getPlugin(PhantasyQuest.class), () -> {
-                player.sendMessage(ChatColor.GREEN + "=====[Quest] 選択=====");
+                player.sendMessage(ChatColor.GREEN + "=====選択=====");
                 conversation.getReplyNumbers().forEach(number -> {
                     Conversation conv = new Conversation(conversations.get(number - 1), player);
                     TextComponent component = new TextComponent(ChatColor.BLUE + player.getName() + ": " + ChatColor.GOLD + conv.getText());
@@ -72,7 +72,7 @@ public class Quest {
                     component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.GOLD + "クリックして答える").create()));
                     player.spigot().sendMessage(component);
                 });
-                player.sendMessage(ChatColor.GREEN + "=====[Quest] 選択=====");
+                player.sendMessage(ChatColor.GREEN + "=====選択=====");
             }, 40L);
 
         } else { //end conversation
