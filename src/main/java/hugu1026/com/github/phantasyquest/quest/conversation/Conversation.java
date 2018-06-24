@@ -32,7 +32,7 @@ public class Conversation {
         return this.eventNumbers;
     }
 
-    public int getNextNumbers() {
+    public int getNextNumber() {
         return this.nextNumber;
     }
 

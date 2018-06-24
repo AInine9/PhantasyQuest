@@ -5,6 +5,10 @@ import hugu1026.com.github.phantasyquest.quest.condition.ConditionChecker;
 import hugu1026.com.github.phantasyquest.quest.conversation.Conversation;
 import hugu1026.com.github.phantasyquest.util.QuestYAMLReaderUtil;
 import net.citizensnpcs.api.npc.NPC;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -48,22 +52,31 @@ public class Quest {
             player.sendMessage(ChatColor.GREEN + "[Quest] " + ChatColor.RED + NPCName + ": " + ChatColor.GOLD + conversation.getText());
         } else {
             //speaker is a player
-            player.sendMessage(ChatColor.GREEN + "[Quest] " + ChatColor.RED + player.getName() + ": " + ChatColor.GOLD + conversation.getText());
+            player.sendMessage(ChatColor.GREEN + "[Quest] " + ChatColor.BLUE + player.getName() + ": " + ChatColor.GOLD + conversation.getText());
         }
 
-        if (conversation.getReplyNumbers().size() == 0) {
+        if (conversation.getNextNumber() != 0) {
             //exist next conversation
             Bukkit.getScheduler().scheduleSyncDelayedTask(PhantasyQuest.getPlugin(PhantasyQuest.class), () ->
-                            startQuest(conversation.getNextNumbers())
+                            startQuest(conversation.getNextNumber())
                     , 40L);
 
-        } else {
+        } else if (conversation.getReplyNumbers().size() != 0) {
             //exist reply
-            Bukkit.getScheduler().scheduleSyncDelayedTask(PhantasyQuest.getPlugin(PhantasyQuest.class), ()
-                    -> conversation.getReplyNumbers().forEach(number -> {
-                Conversation conv = new Conversation(conversations.get(number - 1), player);
-                player.sendMessage(ChatColor.GREEN + "[Quest] " + ChatColor.RED + player.getName() + ": " + ChatColor.GOLD + conv.getText());
-            }), 40L);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(PhantasyQuest.getPlugin(PhantasyQuest.class), () -> {
+                player.sendMessage(ChatColor.GREEN + "=====[Quest] 選択=====");
+                conversation.getReplyNumbers().forEach(number -> {
+                    Conversation conv = new Conversation(conversations.get(number - 1), player);
+                    TextComponent component = new TextComponent(ChatColor.BLUE + player.getName() + ": " + ChatColor.GOLD + conv.getText());
+                    component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/quest start " + questFileName + " " + player.getName() + " " + number + " " + NPCId));
+                    component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(ChatColor.GOLD + "クリックして答える").create()));
+                    player.spigot().sendMessage(component);
+                });
+                player.sendMessage(ChatColor.GREEN + "=====[Quest] 選択=====");
+            }, 40L);
+
+        } else { //end conversation
+            return;
         }
 
     }
