@@ -3,6 +3,7 @@ package hugu1026.com.github.phantasyquest.quest;
 import hugu1026.com.github.phantasyquest.PhantasyQuest;
 import hugu1026.com.github.phantasyquest.quest.condition.ConditionChecker;
 import hugu1026.com.github.phantasyquest.quest.conversation.Conversation;
+import hugu1026.com.github.phantasyquest.quest.event.EventExecuter;
 import hugu1026.com.github.phantasyquest.util.QuestYAMLReaderUtil;
 import net.citizensnpcs.api.npc.NPC;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -53,6 +54,14 @@ public class Quest {
         } else {
             //speaker is a player
             player.sendMessage(ChatColor.GREEN + "[Quest] " + ChatColor.BLUE + player.getName() + ": " + ChatColor.GOLD + conversation.getText());
+        }
+
+        if (conversation.getEventNumbers() != null) {
+            //exist events
+            conversation.getEventNumbers().forEach(number -> {
+                EventExecuter executer = new EventExecuter(events.get(number - 1), player);
+                executer.ExecuteEvent();
+            });
         }
 
         if (conversation.getNextNumber() != 0) {
