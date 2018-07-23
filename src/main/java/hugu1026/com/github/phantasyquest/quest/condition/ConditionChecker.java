@@ -16,6 +16,9 @@ public class ConditionChecker extends Condition {
         switch (condition) {
             case "hasItem":
                 conditionClass = new HasItem(getConditionID());
+                break;
+            case "hasTag":
+                conditionClass = new HasTag(getConditionID());
         }
         if (conditionClass != null) {
             return conditionClass.checkMeetCondition(player);
