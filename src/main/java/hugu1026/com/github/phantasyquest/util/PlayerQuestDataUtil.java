@@ -57,39 +57,49 @@ public class PlayerQuestDataUtil {
         }
     }
 
-    public String getPlayerName(Player player) {
+    public static String getPlayerName(Player player) {
         FileConfiguration playerData = getPlayerData(player);
 
         return playerData.getString("name");
     }
 
-    public List<String> getAcceptedQuests(Player player) {
+    public static List<String> getAcceptedQuests(Player player) {
         FileConfiguration playerData = getPlayerData(player);
 
         return playerData.getStringList("accepted_quests");
     }
 
-    public List<String> getClearedQuests(Player player) {
+    public static List<String> getClearedQuests(Player player) {
         FileConfiguration playerData = getPlayerData(player);
 
         return playerData.getStringList("cleared_quests");
     }
 
-    public List<String> getTags(Player player) {
+    public static List<String> getTags(Player player) {
         FileConfiguration playerData = getPlayerData(player);
 
         return playerData.getStringList("tags");
     }
 
-    public List<String> getObjectives(Player player) {
+    public static List<String> getObjectives(Player player) {
         FileConfiguration playerData = getPlayerData(player);
 
         return playerData.getStringList("objectives");
     }
 
-    public List<String> getJournals(Player player) {
+    public static List<String> getJournals(Player player) {
         FileConfiguration playerData = getPlayerData(player);
 
         return playerData.getStringList("journals");
+    }
+
+    public static void addTags(Player player, String tag) {
+        File playerFile = getPlayerFile(player);
+        FileConfiguration playerData = getPlayerData(player);
+
+        List<String> tags = getTags(player);
+        tags.add(tag);
+        playerData.set("tags", tags);
+        savePlayerData(playerFile, playerData, player);
     }
 }

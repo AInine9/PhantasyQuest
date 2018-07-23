@@ -16,6 +16,9 @@ public class EventExecuter extends Event {
         switch (event) {
             case "giveItem":
                 eventClass = new GiveItem(getEventID(), getPlayer());
+                break;
+            case "giveTag":
+                eventClass = new GiveTag(getEventID(), getPlayer());
         }
         if (eventClass != null) {
             eventClass.ExecuteEvent();
