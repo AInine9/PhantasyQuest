@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class GiveItem extends Event{
+public class GiveItem extends Event {
     /*arg1 is Material Name.
     arg2 is item amount*/
 
