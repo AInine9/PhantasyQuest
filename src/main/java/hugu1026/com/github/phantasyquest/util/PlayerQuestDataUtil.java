@@ -102,4 +102,14 @@ public class PlayerQuestDataUtil {
         playerData.set("tags", tags);
         savePlayerData(playerFile, playerData, player);
     }
+
+    public static void addObjective(Player player, String objective) {
+        File playerFile = getPlayerFile(player);
+        FileConfiguration playerData = getPlayerData(player);
+
+        List<String> objectives = getObjectives(player);
+        objectives.add(objective);
+        playerData.set("objectives", objectives);
+        savePlayerData(playerFile, playerData, player);
+    }
 }

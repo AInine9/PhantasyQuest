@@ -59,7 +59,7 @@ public class Quest {
         if (conversation.getEventNumbers() != null) {
             //exist events
             conversation.getEventNumbers().forEach(number -> {
-                EventExecuter executer = new EventExecuter(events.get(number - 1), player);
+                EventExecuter executer = new EventExecuter(events.get(number - 1), player, questFileName);
                 executer.ExecuteEvent();
             });
         }
