@@ -2,6 +2,7 @@ package hugu1026.com.github.phantasyquest;
 
 import hugu1026.com.github.phantasyquest.citizens.listener.NPCRightClick;
 import hugu1026.com.github.phantasyquest.commands.QuestCommands;
+import hugu1026.com.github.phantasyquest.listener.BlockBreak;
 import hugu1026.com.github.phantasyquest.listener.PlayerJoin;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -25,5 +26,6 @@ public final class PhantasyQuest extends JavaPlugin {
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new NPCRightClick(), this);
         pm.registerEvents(new PlayerJoin(), this);
+        pm.registerEvents(new BlockBreak(), this);
     }
 }

@@ -112,4 +112,20 @@ public class PlayerQuestDataUtil {
         playerData.set("objectives", objectives);
         savePlayerData(playerFile, playerData, player);
     }
+
+    public static void replaceObjective(String stringToReplace, String newString, Player player) {
+        List<String> objectives = getObjectives(player);
+        for (int i = 0; i < objectives.size(); i++) {
+            String string = objectives.get(i);
+            if (string.equals(stringToReplace)) {
+                objectives.set(i, newString);
+
+                FileConfiguration playerData = getPlayerData(player);
+                File playerFile = getPlayerFile(player);
+
+                playerData.set("objectives", objectives);
+                savePlayerData(playerFile, playerData, player);
+            }
+        }
+    }
 }
