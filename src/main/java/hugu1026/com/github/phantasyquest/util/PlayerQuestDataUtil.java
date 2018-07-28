@@ -128,4 +128,20 @@ public class PlayerQuestDataUtil {
             }
         }
     }
+
+    public static void deleteObjective(String stringToDetele, Player player) {
+        List<String> objectives = getObjectives(player);
+        for (int i = 0; i < objectives.size(); i++) {
+            String string = objectives.get(i);
+            if (string.equals(stringToDetele)) {
+                objectives.remove(i);
+
+                FileConfiguration playerData = getPlayerData(player);
+                File playerFile = getPlayerFile(player);
+
+                playerData.set("objectives", objectives);
+                savePlayerData(playerFile, playerData, player);
+            }
+        }
+    }
 }

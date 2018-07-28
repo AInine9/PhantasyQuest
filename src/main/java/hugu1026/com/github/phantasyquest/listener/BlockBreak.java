@@ -1,5 +1,6 @@
 package hugu1026.com.github.phantasyquest.listener;
 
+import hugu1026.com.github.phantasyquest.quest.objective.ObjectiveCompleter;
 import hugu1026.com.github.phantasyquest.quest.objective.ObjectiveProgressor;
 import hugu1026.com.github.phantasyquest.util.PlayerQuestDataUtil;
 import org.bukkit.Material;
@@ -22,6 +23,8 @@ public class BlockBreak implements Listener {
             if (event.getBlock().getType() == material) {
                 if (amount - 1 == 0) {
                     //complete objective
+                    ObjectiveCompleter completer = new ObjectiveCompleter(progressor.getObjectiveID(), event.getPlayer());
+                    completer.completeObjective();
                 } else {
                     //progress objective
                     String originalObjective = "blockBreak " + item + " " + amount;
