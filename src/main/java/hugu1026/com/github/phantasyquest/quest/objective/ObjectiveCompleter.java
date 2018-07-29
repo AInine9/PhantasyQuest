@@ -21,9 +21,9 @@ public class ObjectiveCompleter {
 
         if (objectiveID.contains("events:")) {
             //exist events to execute after player completes the objective.
-            int biginIndex = objectiveID.indexOf("events:");
+            int beginIndex = objectiveID.indexOf("events:");
             int endIndex = objectiveID.length();
-            String[] eventNumbers = objectiveID.substring(biginIndex, endIndex).replace("events:", "").split(", ");
+            String[] eventNumbers = objectiveID.substring(beginIndex, endIndex).replace("events:", "").split(", ");
 
             for (String eventNumber : eventNumbers) {
                 String eventID = QuestYAMLReaderUtil.getEvents(questFileName).get(Integer.parseInt(eventNumber) - 1);
