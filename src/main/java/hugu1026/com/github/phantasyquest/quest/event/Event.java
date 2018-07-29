@@ -6,7 +6,7 @@ public abstract class Event {
     private String eventID, event;
     private String[] args;
     private Player player;
-    private String questFileName;
+    private String questFileName = null;
 
     public Event(String eventID, Player player) {
         this.eventID = eventID;

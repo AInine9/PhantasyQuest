@@ -16,8 +16,8 @@ public class StartObjective extends Event {
     public void ExecuteEvent() {
         String objectiveNumber = getArg(1);
         List<String> objectives = QuestYAMLReaderUtil.getObjectives(getQuestFileName());
-        String objective = objectives.get(Integer.parseInt(objectiveNumber) - 1);
+        String objectiveID = objectives.get(Integer.parseInt(objectiveNumber) - 1);
 
-        PlayerQuestDataUtil.addObjective(getPlayer(), objective);
+        PlayerQuestDataUtil.addObjective(getPlayer(), objectiveID, getQuestFileName());
     }
 }

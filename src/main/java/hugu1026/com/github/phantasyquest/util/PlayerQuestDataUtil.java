@@ -103,12 +103,12 @@ public class PlayerQuestDataUtil {
         savePlayerData(playerFile, playerData, player);
     }
 
-    public static void addObjective(Player player, String objective) {
+    public static void addObjective(Player player, String objectiveID, String questFileName) {
         File playerFile = getPlayerFile(player);
         FileConfiguration playerData = getPlayerData(player);
 
         List<String> objectives = getObjectives(player);
-        objectives.add(objective);
+        objectives.add(questFileName + " " + objectiveID);
         playerData.set("objectives", objectives);
         savePlayerData(playerFile, playerData, player);
     }

@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 public class ObjectiveProgressor {
 
     private String objectiveID = null;
+    private String questFileName = null;
     private boolean available = false;
     private String[] args = null;
 
@@ -13,7 +14,8 @@ public class ObjectiveProgressor {
         for (String string : PlayerQuestDataUtil.getObjectives(player)) {
             if (string.contains(objectiveName)) {
                 this.available = true;
-                this.objectiveID = string;
+                this.questFileName = string.split(" ")[0];
+                this.objectiveID = string.replace(questFileName + " ", "");
                 this.args = objectiveID.split(" ");
             }
         }
@@ -29,6 +31,10 @@ public class ObjectiveProgressor {
 
     public boolean checkAvailable() {
         return available;
+    }
+
+    public String getQuestFileName() {
+        return this.questFileName;
     }
 
     public String getArg(int number) {

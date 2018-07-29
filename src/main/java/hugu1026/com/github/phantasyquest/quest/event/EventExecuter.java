@@ -8,6 +8,10 @@ public class EventExecuter extends Event {
         super(eventID, player, questFileName);
     }
 
+    public EventExecuter(String eventID, Player player) {
+        super(eventID, player);
+    }
+
     @Override
     public void ExecuteEvent() {
         String event = getEvent();
@@ -21,7 +25,11 @@ public class EventExecuter extends Event {
                 eventClass = new GiveTag(getEventID(), getPlayer());
                 break;
             case "startObjective":
-                eventClass = new StartObjective(getEventID(), getPlayer(), getQuestFileName());
+                if (getQuestFileName() != null) {
+                    eventClass = new StartObjective(getEventID(), getPlayer(), getQuestFileName());
+                    break;
+                }
+                break;
         }
         if (eventClass != null) {
             eventClass.ExecuteEvent();
