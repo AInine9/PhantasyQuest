@@ -8,6 +8,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
+import java.util.List;
+
 public class BlockBreak implements Listener {
 
     @EventHandler
@@ -16,21 +18,30 @@ public class BlockBreak implements Listener {
         arg2 is amount of blocks*/
         ObjectiveProgressor progressor = new ObjectiveProgressor(event.getPlayer(), "blockBreak");
         if (progressor.checkAvailable()) {
-            String questFileName = progressor.getQuestFileName();
-            String item = progressor.getArg(1);
-            int amount = Integer.parseInt(progressor.getArg(2));
-            Material material = Material.valueOf(item);
 
-            if (event.getBlock().getType() == material) {
-                if (amount - 1 == 0) {
-                    //complete objective
-                    ObjectiveCompleter completer = new ObjectiveCompleter(progressor.getObjectiveID(), questFileName, event.getPlayer());
-                    completer.completeObjective();
-                } else {
-                    //progress objective
-                    String originalObjective = questFileName + " blockBreak " + item + " " + amount;
-                    String editedObjective = questFileName + " blockBreak " + item + " " + Integer.toString(amount - 1);
-                    PlayerQuestDataUtil.replaceObjective(originalObjective, editedObjective, event.getPlayer());
+            //list up all objectiveID that contains specific objective name.
+            List<String> objectiveIDs = progressor.getObjectiveIDs();
+
+            for (String objectiveID : objectiveIDs) {
+                //format objectiveID into each strings
+                progressor.objectiveIDFormat(objectiveID);
+
+                String questFileName = progressor.getQuestFileName();
+                String item = progressor.getArg(1);
+                int amount = Integer.parseInt(progressor.getArg(2));
+                Material material = Material.valueOf(item);
+
+                if (event.getBlock().getType() == material) {
+                    if (amount - 1 == 0) {
+                        //complete objective
+                        ObjectiveCompleter completer = new ObjectiveCompleter(progressor.getObjectiveID(), questFileName, event.getPlayer());
+                        completer.completeObjective();
+                    } else {
+                        //progress objective
+                        String originalObjective = questFileName + " blockBreak " + item + " " + amount;
+                        String editedObjective = questFileName + " blockBreak " + item + " " + Integer.toString(amount - 1);
+                        PlayerQuestDataUtil.replaceObjective(originalObjective, editedObjective, event.getPlayer());
+                    }
                 }
             }
         }
