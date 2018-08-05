@@ -118,11 +118,13 @@ public class PlayerQuestDataUtil {
         for (int i = 0; i < objectives.size(); i++) {
             String string = objectives.get(i);
             if (string.contains(stringToReplace)) {
-                int beginIndex = string.indexOf(" events:");
-                String eventsString = string.substring(beginIndex);
-
-                objectives.set(i, newString + eventsString);
-
+                if (string.contains("events:")) {
+                    int beginIndex = string.indexOf(" events:");
+                    String eventsString = string.substring(beginIndex);
+                    objectives.set(i, newString + eventsString);
+                } else {
+                    objectives.set(i, newString);
+                }
                 FileConfiguration playerData = getPlayerData(player);
                 File playerFile = getPlayerFile(player);
 
