@@ -19,6 +19,9 @@ public class ConditionChecker extends Condition {
                 break;
             case "hasTag":
                 conditionClass = new HasTag(getConditionID());
+                break;
+            case "hasPermission":
+                conditionClass = new HasPermission(getConditionID());
         }
         if (conditionClass != null) {
             return conditionClass.checkMeetCondition(player);
